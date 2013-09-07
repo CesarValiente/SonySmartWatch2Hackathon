@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- No translation of sample extensions -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">Wunderlist extension for Smart Watch 2</string>
+    <!-- Title of preference activity -->
+    <string name="preference_activity_title">Sample notification Settings</string>
+    <!-- Configuration text shown in preferences -->
+    <string name="configuration_text">Sample notification settings</string>
+    <!-- Extension name, shown in preferences -->
+    <string name="extension_name">Wunderlist extension</string>
+    <!-- Name of source, shown in preferences -->
+    <string name="source_name">Wunderlist</string>
+    <!-- Action Toasts, shown on accessory -->
+    <string name="action_event_1">Snooze</string>
+    <string name="action_event_2">Done</string>
+    <string name="action_event_3">Remove</string>
+
+    <!-- Text that is read before the display name on accessories that supports text to speech -->
+    <string name="text_to_speech">New sample notification event from</string>
+
+    <string name="preference_option_read_me">READ ME</string>
+    <string name="preference_key_read_me">preference_key_read_me</string>
+    <string name="preference_option_read_me_txt">1. Check menu option Active to generate events based on a static
+        timer.\n\n2. Uncheck menu option Active to cancel the event generator.\n\n3. Tap Clear All Events to remove
+        all events.
+    </string>
+    <string name="preference_option_is_active">Active</string>
+    <string name="preference_key_is_active">preference_key_is_active</string>
+    <string name="preference_option_clear">Clear All Events</string>
+    <string name="preference_option_clear_txt">"All sample events on device will be cleared, continue?"</string>
+    <string name="preference_key_clear">preference_key_clear</string>
+    <string name="clear_success">All events have been deleted</string>
+    <string name="clear_failure">Failed to delete events</string>
+
+</resources>
