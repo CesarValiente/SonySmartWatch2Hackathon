@@ -215,14 +215,9 @@ public class WunderlistNotificationsService extends ExtensionService {
         if (Notification.SourceColumns.ACTION_1.equals(action)) {
             doAction1(eventId);
         } else if (Notification.SourceColumns.ACTION_2.equals(action)) {
-            // Here we can take different actions depending on the device.
-            if (advancedFeaturesSupported) {
-                Toast.makeText(this, "Action 2 API level 2", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Action 2", Toast.LENGTH_LONG).show();
-            }
+            doAction2(eventId);
         } else if (Notification.SourceColumns.ACTION_3.equals(action)) {
-            Toast.makeText(this, "Action 3", Toast.LENGTH_LONG).show();
+            doAction3(eventId);
         }
     }
 
@@ -238,6 +233,9 @@ public class WunderlistNotificationsService extends ExtensionService {
      * @param eventId The event id
      */
     public void doAction1(int eventId) {
+        // Snooze
+
+
         Log.d(LOG_TAG, "doAction1 event id: " + eventId);
         Cursor cursor = null;
         try {
@@ -266,6 +264,17 @@ public class WunderlistNotificationsService extends ExtensionService {
                 cursor.close();
             }
         }
+    }
+
+    public void doAction2(int eventId) {
+        // Mark task as done
+    }
+
+    public void doAction3(int eventId) {
+        // Remove reminder
+        Log.d(LOG_TAG, "Remove event " + eventId);
+        String[] arguments = { String.valueOf(eventId) };
+        NotificationUtil.deleteEvents(getBaseContext(), Notification.EventColumns._ID + "=?", arguments);
     }
 
     /**

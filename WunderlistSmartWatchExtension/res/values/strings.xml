@@ -7,7 +7,7 @@
     <!-- Configuration text shown in preferences -->
     <string name="configuration_text">Sample notification settings</string>
     <!-- Extension name, shown in preferences -->
-    <string name="extension_name">Wunderlist extension</string>
+    <string name="extension_name">Wunderlist</string>
     <!-- Name of source, shown in preferences -->
     <string name="source_name">Wunderlist</string>
     <!-- Action Toasts, shown on accessory -->
