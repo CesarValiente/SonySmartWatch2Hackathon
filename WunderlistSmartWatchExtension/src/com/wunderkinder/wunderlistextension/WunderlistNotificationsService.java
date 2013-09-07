@@ -128,7 +128,9 @@ public class WunderlistNotificationsService extends ExtensionService {
                 String taskTitle = intent.getStringExtra("taskTitle");
                 String taskId = intent.getStringExtra("taskId");
                 int taskDbId = intent.getIntExtra("taskDbObjectId", 0);
-                addData(intent.getStringExtra("action"), taskTitle, taskId, taskDbId);
+                String geoData = intent.getStringExtra("taskGeoData");
+                String uri = intent.getStringExtra("taskGeoUri");
+                addData(intent.getStringExtra("action"), taskTitle, taskId, taskDbId, geoData, uri);
 
 
                 stopSelfCheck();
@@ -173,7 +175,7 @@ public class WunderlistNotificationsService extends ExtensionService {
     }
 
 
-    private void addData(String _action, String _name, String _id, int _dbId) {
+    private void addData(String _action, String _name, String _id, int _dbId, String geoData, String uri) {
         String name = _action;
         String message = _name;
         long time = System.currentTimeMillis();
@@ -194,6 +196,14 @@ public class WunderlistNotificationsService extends ExtensionService {
         eventValues.put(Notification.EventColumns.PUBLISHED_TIME, time);
         eventValues.put(Notification.EventColumns.SOURCE_ID, sourceId);
         eventValues.put(Notification.EventColumns.FRIEND_KEY, extraInfo);
+
+        if (geoData != null) {
+            eventValues.put(Notification.EventColumns.GEO_DATA, geoData);
+        }
+
+        if (uri != null) {
+            eventValues.put(Notification.EventColumns.IMAGE_URI, uri);
+        }
 
         try {
             getContentResolver().insert(Notification.Event.URI, eventValues);
