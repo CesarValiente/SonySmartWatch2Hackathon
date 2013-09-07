@@ -14,14 +14,6 @@
             android:icon="@drawable/icon"
             android:label="@string/app_name">
 
-        <activity
-                android:name="com.wunderkinder.wunderlistextension.SamplePreferenceActivity"
-                android:label="@string/preference_activity_title">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
-        </activity>
-
         <service android:name=".WunderlistNotificationsService"/>
 
         <receiver android:name=".ExtensionReceiver">

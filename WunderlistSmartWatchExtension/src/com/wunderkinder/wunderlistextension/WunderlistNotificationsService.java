@@ -46,7 +46,6 @@ import android.util.Log;
 import com.sonyericsson.extras.liveware.aef.notification.Notification;
 import com.sonyericsson.extras.liveware.aef.registration.Registration;
 import com.sonyericsson.extras.liveware.extension.util.ExtensionService;
-import com.sonyericsson.extras.liveware.extension.util.ExtensionUtils;
 import com.sonyericsson.extras.liveware.extension.util.notification.NotificationUtil;
 import com.sonyericsson.extras.liveware.extension.util.registration.DeviceInfoHelper;
 import com.sonyericsson.extras.liveware.extension.util.registration.RegistrationInformation;
@@ -184,8 +183,6 @@ public class WunderlistNotificationsService extends ExtensionService {
             Log.e(LOG_TAG, "Failed to insert data");
             return;
         }
-        String profileImage = ExtensionUtils.getUriString(this,
-                R.drawable.widget_default_userpic_bg);
 
         String extraInfo = _dbId + "," + _id;
 
@@ -194,7 +191,6 @@ public class WunderlistNotificationsService extends ExtensionService {
         eventValues.put(Notification.EventColumns.DISPLAY_NAME, name);
         eventValues.put(Notification.EventColumns.MESSAGE, message);
         eventValues.put(Notification.EventColumns.PERSONAL, 1);
-        eventValues.put(Notification.EventColumns.PROFILE_IMAGE_URI, profileImage);
         eventValues.put(Notification.EventColumns.PUBLISHED_TIME, time);
         eventValues.put(Notification.EventColumns.SOURCE_ID, sourceId);
         eventValues.put(Notification.EventColumns.FRIEND_KEY, extraInfo);

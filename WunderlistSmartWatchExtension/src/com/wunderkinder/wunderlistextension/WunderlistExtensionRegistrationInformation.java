@@ -92,8 +92,6 @@ public class WunderlistExtensionRegistrationInformation extends RegistrationInfo
         String extensionName = mContext.getString(R.string.extension_name);
 
         ContentValues values = new ContentValues();
-        values.put(Registration.ExtensionColumns.CONFIGURATION_ACTIVITY,
-                SamplePreferenceActivity.class.getName());
         values.put(Registration.ExtensionColumns.CONFIGURATION_TEXT, configurationText);
         values.put(Registration.ExtensionColumns.EXTENSION_ICON_URI, extensionIcon);
         values.put(Registration.ExtensionColumns.EXTENSION_48PX_ICON_URI, extensionIcon48);
@@ -132,7 +130,6 @@ public class WunderlistExtensionRegistrationInformation extends RegistrationInfo
                 R.drawable.icn_18x18_message_notification);
         String iconBw = ExtensionUtils.getUriString(mContext,
                 R.drawable.icn_18x18_black_white_message_notification);
-        String textToSpeech = mContext.getString(R.string.text_to_speech);
         sourceValues = new ContentValues();
         sourceValues.put(Notification.SourceColumns.ENABLED, true);
         sourceValues.put(Notification.SourceColumns.ICON_URI_1, iconSource1);
@@ -142,7 +139,6 @@ public class WunderlistExtensionRegistrationInformation extends RegistrationInfo
         sourceValues.put(Notification.SourceColumns.NAME, mContext.getString(R.string.source_name));
         sourceValues.put(Notification.SourceColumns.EXTENSION_SPECIFIC_ID, extensionSpecificId);
         sourceValues.put(Notification.SourceColumns.PACKAGE_NAME, mContext.getPackageName());
-        sourceValues.put(Notification.SourceColumns.TEXT_TO_SPEECH, textToSpeech);
         sourceValues.put(Notification.SourceColumns.ACTION_1,
                 mContext.getString(R.string.action_event_1));
         sourceValues.put(Notification.SourceColumns.ACTION_2,
