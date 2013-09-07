@@ -17,6 +17,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="SmartExtensionAPI" />
     <orderEntry type="module" module-name="SmartExtensionUtils" />
+    <orderEntry type="library" name="wkgson-2.1" level="project" />
   </component>
 </module>
 

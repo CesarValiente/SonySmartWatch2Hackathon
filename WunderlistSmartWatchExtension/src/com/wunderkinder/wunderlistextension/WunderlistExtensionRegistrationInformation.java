@@ -149,8 +149,12 @@ public class WunderlistExtensionRegistrationInformation extends RegistrationInfo
                 mContext.getString(R.string.action_event_2));
         sourceValues.put(Notification.SourceColumns.ACTION_3,
                 mContext.getString(R.string.action_event_3));
-//        sourceValues.put(Notification.SourceColumns.ACTION_ICON_1,
-//                ExtensionUtils.getUriString(mContext, R.drawable.actions_call));
+        sourceValues.put(Notification.SourceColumns.ACTION_ICON_1,
+                ExtensionUtils.getUriString(mContext, R.drawable.actions_snooze));
+        sourceValues.put(Notification.SourceColumns.ACTION_ICON_2,
+                ExtensionUtils.getUriString(mContext, R.drawable.actions_done));
+        sourceValues.put(Notification.SourceColumns.ACTION_ICON_3,
+                ExtensionUtils.getUriString(mContext, R.drawable.actions_dismiss));
         return sourceValues;
     }
 

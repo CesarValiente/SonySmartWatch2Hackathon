@@ -42,7 +42,6 @@ import android.database.SQLException;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.sonyericsson.extras.liveware.aef.notification.Notification;
 import com.sonyericsson.extras.liveware.aef.registration.Registration;
@@ -127,7 +126,12 @@ public class WunderlistNotificationsService extends ExtensionService {
                 stopSelfCheck();
             } else if (INTENT_ACTION_ADD.equals(intent.getAction())) {
                 Log.d(LOG_TAG, "onStart action: INTENT_ACTION_ADD");
-                addData(intent.getStringExtra("action"), intent.getStringExtra("task"));
+                String taskTitle = intent.getStringExtra("taskTitle");
+                String taskId = intent.getStringExtra("taskId");
+                int taskDbId = intent.getIntExtra("taskDbObjectId", 0);
+                addData(intent.getStringExtra("action"), taskTitle, taskId, taskDbId);
+
+
                 stopSelfCheck();
             }
         }
@@ -170,7 +174,7 @@ public class WunderlistNotificationsService extends ExtensionService {
     }
 
 
-    private void addData(String _action, String _name) {
+    private void addData(String _action, String _name, String _id, int _dbId) {
         String name = _action;
         String message = _name;
         long time = System.currentTimeMillis();
@@ -183,6 +187,8 @@ public class WunderlistNotificationsService extends ExtensionService {
         String profileImage = ExtensionUtils.getUriString(this,
                 R.drawable.widget_default_userpic_bg);
 
+        String extraInfo = _dbId + "," + _id;
+
         ContentValues eventValues = new ContentValues();
         eventValues.put(Notification.EventColumns.EVENT_READ_STATUS, false);
         eventValues.put(Notification.EventColumns.DISPLAY_NAME, name);
@@ -191,6 +197,7 @@ public class WunderlistNotificationsService extends ExtensionService {
         eventValues.put(Notification.EventColumns.PROFILE_IMAGE_URI, profileImage);
         eventValues.put(Notification.EventColumns.PUBLISHED_TIME, time);
         eventValues.put(Notification.EventColumns.SOURCE_ID, sourceId);
+        eventValues.put(Notification.EventColumns.FRIEND_KEY, extraInfo);
 
         try {
             getContentResolver().insert(Notification.Event.URI, eventValues);
@@ -234,25 +241,25 @@ public class WunderlistNotificationsService extends ExtensionService {
      */
     public void doAction1(int eventId) {
         // Snooze
+        Log.d(LOG_TAG, "Snooze " + eventId);
 
-
-        Log.d(LOG_TAG, "doAction1 event id: " + eventId);
         Cursor cursor = null;
         try {
-            String name = "";
-            String message = "";
+            String data = "";
             cursor = getContentResolver().query(Notification.Event.URI, null,
                     Notification.EventColumns._ID + " = " + eventId, null, null);
             if (cursor != null && cursor.moveToFirst()) {
-                int nameIndex = cursor.getColumnIndex(Notification.EventColumns.DISPLAY_NAME);
-                int messageIndex = cursor.getColumnIndex(Notification.EventColumns.MESSAGE);
-                name = cursor.getString(nameIndex);
-                message = cursor.getString(messageIndex);
-            }
+                data = cursor.getString(cursor.getColumnIndexOrThrow(Notification.EventColumns.FRIEND_KEY));
+                if (data != null) {
+                    String[] d = data.split(",");
+                    Intent markDoneIntent = new Intent("com.wunderkinder.wunderlistandroid.action" +
+                            ".snooze_action");
+                    markDoneIntent.putExtra("extra_task_id", d[1]);
+                    markDoneIntent.putExtra("extra_task_db_id", Integer.valueOf(d[0]));
 
-            String toastMessage = getText(R.string.action_event_1) + ", Event: " + eventId
-                    + ", Name: " + name + ", Message: " + message;
-            Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+                    getBaseContext().sendBroadcast(markDoneIntent);
+                }
+            }
         } catch (SQLException e) {
             Log.e(LOG_TAG, "Failed to query event", e);
         } catch (SecurityException e) {
@@ -264,10 +271,46 @@ public class WunderlistNotificationsService extends ExtensionService {
                 cursor.close();
             }
         }
+
+        // Also, remove the reminder
+        doAction3(eventId);
     }
 
     public void doAction2(int eventId) {
         // Mark task as done
+        Log.d(LOG_TAG, "Mark as done " + eventId);
+
+        Cursor cursor = null;
+        try {
+            String data = "";
+            cursor = getContentResolver().query(Notification.Event.URI, null,
+                    Notification.EventColumns._ID + " = " + eventId, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                data = cursor.getString(cursor.getColumnIndexOrThrow(Notification.EventColumns.FRIEND_KEY));
+                if (data != null) {
+                    String[] d = data.split(",");
+                    Intent markDoneIntent = new Intent("com.wunderkinder.wunderlistandroid.action" +
+                            ".mark_task_done_action");
+                    markDoneIntent.putExtra("extra_task_id", d[1]);
+                    markDoneIntent.putExtra("extra_task_db_id", Integer.valueOf(d[0]));
+
+                    getBaseContext().sendBroadcast(markDoneIntent);
+                }
+            }
+        } catch (SQLException e) {
+            Log.e(LOG_TAG, "Failed to query event", e);
+        } catch (SecurityException e) {
+            Log.e(LOG_TAG, "Failed to query event", e);
+        } catch (IllegalArgumentException e) {
+            Log.e(LOG_TAG, "Failed to query event", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        // Also, remove the reminder
+        doAction3(eventId);
     }
 
     public void doAction3(int eventId) {
