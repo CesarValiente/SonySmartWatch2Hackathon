@@ -46,6 +46,7 @@ import android.util.Log;
 import com.sonyericsson.extras.liveware.aef.notification.Notification;
 import com.sonyericsson.extras.liveware.aef.registration.Registration;
 import com.sonyericsson.extras.liveware.extension.util.ExtensionService;
+import com.sonyericsson.extras.liveware.extension.util.ExtensionUtils;
 import com.sonyericsson.extras.liveware.extension.util.notification.NotificationUtil;
 import com.sonyericsson.extras.liveware.extension.util.registration.DeviceInfoHelper;
 import com.sonyericsson.extras.liveware.extension.util.registration.RegistrationInformation;
@@ -197,12 +198,18 @@ public class WunderlistNotificationsService extends ExtensionService {
         eventValues.put(Notification.EventColumns.SOURCE_ID, sourceId);
         eventValues.put(Notification.EventColumns.FRIEND_KEY, extraInfo);
 
+        String profileImage = ExtensionUtils.getUriString(this,
+                R.drawable.map);
+        String map = ExtensionUtils.getUriString(this,
+                R.drawable.map_big);
+
         if (geoData != null) {
             eventValues.put(Notification.EventColumns.GEO_DATA, geoData);
         }
 
         if (uri != null) {
-            eventValues.put(Notification.EventColumns.IMAGE_URI, uri);
+            eventValues.put(Notification.EventColumns.IMAGE_URI, map);
+            eventValues.put(Notification.EventColumns.PROFILE_IMAGE_URI, profileImage);
         }
 
         try {
